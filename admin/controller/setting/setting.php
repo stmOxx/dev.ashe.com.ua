@@ -1378,7 +1378,7 @@ class ControllerSettingSetting extends Controller {
 			$this->error['complete_status'] = $this->language->get('error_complete_status');
 		}
 
-		if (!$this->request->post['config_image_category_width'] || !$this->request->post['config_image_category_height']) {
+		if (!$this->request->post['config_image_category_width']) {
 			$this->error['image_category'] = $this->language->get('error_image_category');
 		}
 
