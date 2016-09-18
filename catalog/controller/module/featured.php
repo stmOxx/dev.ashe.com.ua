@@ -1,84 +1,66 @@
 <?php
-class ControllerModuleFeatured extends Controller {
-	public function index($setting) {
-		$this->load->language('module/featured');
 
-		$data['heading_title'] = $this->language->get('heading_title');
+class ControllerModuleFeatured extends Controller
+{
+    public function index($setting)
+    {
+        $this->load->language('module/featured');
 
-		$data['text_tax'] = $this->language->get('text_tax');
+        $data['heading_title'] = $this->language->get('heading_title');
 
-		$data['button_cart'] = $this->language->get('button_cart');
-		$data['button_wishlist'] = $this->language->get('button_wishlist');
-		$data['button_compare'] = $this->language->get('button_compare');
 
-		$this->load->model('catalog/product');
+        $this->load->model('catalog/category');
 
-		$this->load->model('tool/image');
+        $this->load->model('tool/image');
 
-		$data['products'] = array();
+        $data['categories'] = array();
 
-		if (!$setting['limit']) {
-			$setting['limit'] = 4;
-		}
+        $categories = $this->model_catalog_category->getCategories(0);
 
-		if (!empty($setting['product'])) {
-			$products = array_slice($setting['product'], 0, (int)$setting['limit']);
 
-			foreach ($products as $product_id) {
-				$product_info = $this->model_catalog_product->getProduct($product_id);
+        foreach ($categories as $category) {
+            if ($category['top']) {
+                // Level 2
+                $children_data = array();
 
-				if ($product_info) {
-					if ($product_info['image']) {
-						$image = $this->model_tool_image->resize($product_info['image'], $setting['width'], $setting['height']);
-					} else {
-						$image = $this->model_tool_image->resize('placeholder.png', $setting['width'], $setting['height']);
-					}
+                $children = $this->model_catalog_category->getCategories($category['category_id']);
 
-					if (($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) {
-						$price = $this->currency->format($this->tax->calculate($product_info['price'], $product_info['tax_class_id'], $this->config->get('config_tax')));
-					} else {
-						$price = false;
-					}
+                foreach ($children as $child) {
+                    $filter_data = array(
+                        'filter_category_id'  => $child['category_id'],
+                        'filter_sub_category' => true
+                    );
 
-					if ((float)$product_info['special']) {
-						$special = $this->currency->format($this->tax->calculate($product_info['special'], $product_info['tax_class_id'], $this->config->get('config_tax')));
-					} else {
-						$special = false;
-					}
+                    if($child['image']){
+                        $thumb = $this->model_tool_image->resize($child['image'], $this->config->get('config_image_category_width'), $this->config->get('config_image_category_height'));
 
-					if ($this->config->get('config_tax')) {
-						$tax = $this->currency->format((float)$product_info['special'] ? $product_info['special'] : $product_info['price']);
-					} else {
-						$tax = false;
-					}
+                    }else{
+                        $thumb = '';
+                    }
 
-					if ($this->config->get('config_review_status')) {
-						$rating = $product_info['rating'];
-					} else {
-						$rating = false;
-					}
+                    $children_data[] = array(
+                        'name'  => $child['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
+                        'href'  => $this->url->link('product/category', 'path=' . $category['category_id'] . '_' . $child['category_id']),
+                        'thumb' => $thumb
+                    );
+                }
 
-					$data['products'][] = array(
-						'product_id'  => $product_info['product_id'],
-						'thumb'       => $image,
-						'name'        => $product_info['name'],
-						'description' => utf8_substr(strip_tags(html_entity_decode($product_info['description'], ENT_QUOTES, 'UTF-8')), 0, $this->config->get('config_product_description_length')) . '..',
-						'price'       => $price,
-						'special'     => $special,
-						'tax'         => $tax,
-						'rating'      => $rating,
-						'href'        => $this->url->link('product/product', 'product_id=' . $product_info['product_id'])
-					);
-				}
-			}
-		}
-
-		if ($data['products']) {
-			if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/module/featured.tpl')) {
-				return $this->load->view($this->config->get('config_template') . '/template/module/featured.tpl', $data);
-			} else {
-				return $this->load->view('default/template/module/featured.tpl', $data);
-			}
-		}
-	}
+                // Level 1
+                $data['categories'][] = array(
+                    'name'     => $category['name'],
+                    'children' => $children_data,
+                    'column'   => $category['column'] ? $category['column'] : 1,
+                    'href'     => $this->url->link('product/category', 'path=' . $category['category_id'])
+                );
+            }
+        }
+        
+        if ($data['categories']) {
+            if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/module/featured.tpl')) {
+                return $this->load->view($this->config->get('config_template') . '/template/module/featured.tpl', $data);
+            } else {
+                return $this->load->view('default/template/module/featured.tpl', $data);
+            }
+        }
+    }
 }

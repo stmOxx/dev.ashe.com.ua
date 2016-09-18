@@ -57,47 +57,10 @@
     <script src="catalog/view/javascript/next-default/nextmenufix.js" type="text/javascript"></script>
 </head>
 <body class="<?php echo $class; ?>">
-<nav id="top">
-    <div class="container">
-        <?php echo $currency; ?>
-        <?php echo $language; ?>
-        <div id="top-link" class="nav pull-left">
-            <ul class="list-inline">
-                <li class="dropdown"><a href="<?php echo $account; ?>" title="<?php echo $text_account; ?>"
-                                        class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <span
-                            class="hidden-xs hidden-sm"><?php echo $text_account; ?></span> <span class="caret"></span></a>
-                    <ul class="dropdown-menu dropdown-menu-left">
-                        <?php if ($logged) { ?>
-                            <li><a href="<?php echo $account; ?>"><?php echo $text_account; ?></a></li>
-                            <li><a href="<?php echo $order; ?>"><?php echo $text_order; ?></a></li>
-                            <li><a href="<?php echo $transaction; ?>"><?php echo $text_transaction; ?></a></li>
-                            <li><a href="<?php echo $download; ?>"><?php echo $text_download; ?></a></li>
-                            <li><a href="<?php echo $logout; ?>"><?php echo $text_logout; ?></a></li>
-                        <?php } else { ?>
-                            <li><a href="<?php echo $register; ?>"><?php echo $text_register; ?></a></li>
-                            <li><a href="<?php echo $login; ?>"><?php echo $text_login; ?></a></li>
-                        <?php } ?>
-                    </ul>
-            </ul>
-        </div>
-        <div id="top-links" class="nav pull-right">
-            <ul class="list-inline">
-                <li><a href="<?php echo $wishlist; ?>" id="wishlist-total" title="<?php echo $text_wishlist; ?>"><i
-                            class="fa fa-heart"></i> <span
-                            class="hidden-xs hidden-sm hidden-md"><?php echo $text_wishlist; ?></span></a></li>
-                <li><a href="<?php echo $shopping_cart; ?>" title="<?php echo $text_shopping_cart; ?>"><i
-                            class="fa fa-shopping-cart"></i> <span
-                            class="hidden-xs hidden-sm hidden-md"><?php echo $text_shopping_cart; ?></span></a></li>
-                <li><a href="<?php echo $checkout; ?>" title="<?php echo $text_checkout; ?>"><i class="fa fa-share"></i>
-                        <span class="hidden-xs hidden-sm hidden-md"><?php echo $text_checkout; ?></span></a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
 <header>
     <div id="top2">
         <div class="container">
-            <div class="row">
+            <div class="row vert-align">
                 <div class="col-sm-3">
                     <div id="logo">
                         <?php if ($logo) { ?>
@@ -113,8 +76,6 @@
                 <div class="col-sm-3">
                     <div class='phone'><a href="<?php echo $contact; ?>"><i class="fa fa-phone"></i></a> <span
                             class=""><?php echo $telephone; ?></span></div>
-                    <div class='data_open'><i class="fa fa-clock-o" aria-hidden="true"></i> <span
-                            class=""><?php echo $open; ?></span></div>
                 </div>
                 <div id="md-size" class="col-sm-3"><?php echo $search; ?>
                 </div>
