@@ -74,8 +74,8 @@
                     </div>
                 </div>
                 <div class="col-sm-3">
-                    <div class='phone'><a href="<?php echo $contact; ?>"><i class="fa fa-phone"></i></a> <span
-                            class=""><?php echo $telephone; ?></span></div>
+                    <div class='phone'><a href="<?php echo $contact; ?>"> <span
+                            class=""><?php echo $telephone; ?></span></a></div>
                 </div>
                 <div id="md-size" class="col-sm-3"><?php echo $search; ?>
                 </div>
@@ -110,8 +110,6 @@
                                                 </ul>
                                             <?php } ?>
                                         </div>
-                                        <a href="<?php echo $category['href']; ?>"
-                                           class="see-all"><?php echo $text_all; ?><?php echo $category['name']; ?></a>
                                     </div>
                                 </li>
                             <?php } else { ?>

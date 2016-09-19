@@ -2,10 +2,10 @@ $(function(){
  $(window).scroll(function() {
  var top = $(document).scrollTop();
   if(parseInt(window.innerWidth) > '767'){
-   if (top < 124){
+   if (top < 76){
      $("#top3").removeClass("hidden-xs").css({top: '0', position: 'relative'});
    }else {
-    $("#top3").addClass("hidden-xs").css({top: '0', left: '0', position: 'fixed', width:'100%', background: 'rgba(9, 65, 192, 0.85) none repeat scroll 0 0'});
+    $("#top3").addClass("hidden-xs").css({top: '-16px', left: '0', position: 'fixed', width:'100%'});
    }
   }
  });
